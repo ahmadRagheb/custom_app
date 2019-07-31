@@ -12,7 +12,7 @@ class CustomerAward(Document):
 	def get_customers_info(self):
 		conditions = self.prepare_conditions()
 		a= """
-			select c.name as customer,SUM(si.grand_total) as amount
+			select c.name as customer,SUM(si.grand_total) as amount,c.customer_group as customer_group
 			from `tabSales Invoice`
 			as si join `tabCustomer` as c  
 			on si.customer=c.name
@@ -29,7 +29,7 @@ class CustomerAward(Document):
 					c_child = self.append('customer_award_detail')
 					c_child.customer = c.customer
 					c_child.amount = c.amount
-					c_child.discount_amount = self.get_range(c.amount)
+					c_child.discount_amount = self.get_range(c.amount,c.customer,c.customer_group)
 				else:
 					frappe.msgprint(_("No Sales Invoice Match your filtering"))
 			self.calc_sales_invoice()
@@ -37,13 +37,21 @@ class CustomerAward(Document):
 		
 		return customers
 	
-	def get_range (self,amount):
-		filters = { "min": ["<=", amount],"max": [">=", amount]}
-		range_list = frappe.get_list("Customer Award Range Detail", fields=["*"], filters=filters)
+	def get_range (self,amount,customer,customer_group):
+		range_list = frappe.get_list("Customer Award Range Detail", fields=["*"])
 		if range_list :
-			return range_list[0]["percentage"]
-		else :
-			return 0		
+			percentage = 0 
+			for data in range_list:
+				if data["customer"]	:
+					if data["customer"] == customer and  data["min"]<=amount  and data["max"]>=amount:
+						return data["percentage"]
+				elif data["customer_group"]	:
+					if data["customer_group"] == customer_group and  data["min"]<=amount  and data["max"]>=amount:
+						return data["percentage"]
+				elif data["customer_group"] != customer_group and data["customer"] != customer:
+					percentage = data["percentage"]
+	
+		return percentage		
 	
 	
 	def calc_sales_invoice (self):
