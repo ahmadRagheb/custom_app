@@ -29,7 +29,7 @@ frappe.ui.form.on('Customer Award', {
 			return {
 				"filters": {
 					"company": frm.doc.company,
-					"root_type": "Expense",
+				//	"root_type": "Expense",
 					"is_group":0
 				}
 			};

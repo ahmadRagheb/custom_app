@@ -88,6 +88,10 @@ doc_events = {
 	"GL Entry": {
 		"validate": ["custom_app.api_helper.add_sales_customer_info"]
 	},
+        "Item": {
+                "before_insert": ["custom_app.api.naming_series_for_item"]
+        }
+
 }
 
 # Scheduled Tasks
