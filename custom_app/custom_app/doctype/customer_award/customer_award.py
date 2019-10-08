@@ -104,7 +104,7 @@ class CustomerAward(Document):
 		je = frappe.new_doc("Journal Entry")
 		je.posting_date = today()
 		je.company = self.company
-		je.remark = "Customer Award against {0} and {1}".format(self.from_date, self.to_date)
+		je.remark = "Rebate against {0} and {1}".format(self.from_date, self.to_date)
 		for row in self.get('customer_award_detail'):
 			je.append("accounts", {
 				"account": self.default_receivable_account,
