@@ -1,0 +1,14 @@
+[
+ {
+  "docstatus": 0, 
+  "doctype": "Custom Script", 
+  "dt": "Customer Group", 
+  "modified": "2019-05-15 13:27:49.787941", 
+  "name": "Customer Group-Client", 
+  "parent": null, 
+  "parentfield": null, 
+  "parenttype": null, 
+  "script": "cur_frm.set_query(\"default_income_account\", function(doc) {\n\treturn{\n\t\tquery: \"erpnext.controllers.queries.get_income_account\",\n\t\tfilters: {'company': doc.company}\n\t}\n});", 
+  "script_type": "Client"
+ }
+]

@@ -127,3 +127,5 @@ doc_events = {
 # 	"frappe.desk.doctype.event.event.get_events": "custom_app.event.get_events"
 # }
 
+fixtures = ["Custom Script","Custom Field", "Property Setter"]
+
