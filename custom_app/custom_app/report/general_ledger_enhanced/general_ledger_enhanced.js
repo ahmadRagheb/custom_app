@@ -178,6 +178,9 @@ frappe.query_reports["General Ledger Enhanced"] = {
 					frappe.db.get_value(party_type, party, fieldname, function(value) {
 						frappe.query_report.set_filter_value('party_name', value[fieldname]);
 					});
+					frappe.db.get_value(party_type, party, "name", function(value) {
+						frappe.query_report.set_filter_value('party_code', value["name"]);
+					});
 
 					if (party_type === "Customer" || party_type === "Supplier") {
 						frappe.db.get_value(party_type, party, "tax_id", function(value) {
@@ -190,6 +193,12 @@ frappe.query_reports["General Ledger Enhanced"] = {
 		{
 			"fieldname":"party_name",
 			"label": __("Party Name"),
+			"fieldtype": "Data",
+			"hidden": 1
+		},
+		{
+			"fieldname":"party_code",
+			"label": __("Party code"),
 			"fieldtype": "Data",
 			"hidden": 1
 		},

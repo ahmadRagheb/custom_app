@@ -1,82 +1,69 @@
 <h2 class="text-center">{%= __("Statement of Account") %}</h2>
-<h4 class="text-center">
-	{% if (filters.party_name) { %}
-		{%= filters.party_name %}
-	{% } else if (filters.party && filters.show_name) { %}
-		{%= filters.party %}
-	{% } else if (filters.account) { %}
-		{%= filters.account %}
-	{% } %}
-</h4>
 
-<h6 class="text-center">
-	{% if (filters.customer_group) { %}
-	{%= filters.customer_group %}
+<h5 class="text-left">
+    {%= __("DATE FROM") %}
+    {%= frappe.datetime.str_to_user(filters.from_date) %}
+	{%= __("TO") %}
+	{%= frappe.datetime.str_to_user(filters.to_date) %}
+</h5>
+
+<h5 class="text-left">
+    {% if (filters.party) { %}
+    {%= filters.party_type %} 	{%= __("name:") %}
+    {%= filters.party %}
 	{% } %}
-</h6>
-<h6 class="text-center">
+</h5>
+
+<h5 class="text-left">
+    {% if (filters.party) { %}
+    {%= filters.party_type %} 	{%= __("code:") %}
+    {%= filters.party_code %}
+	{% } %}
+</h5>
+
+<h5 class="text-left">
 	{% if (filters.customer_group) { %}
 	{%= __("Vat ID:")%}   {%= filters.vat_id %}
 	{% } %}
-</h6>
-<h6 class="text-center">
+</h5>
+
+<h5 class="text-left">
 	{% if (filters.tax_id) { %}
 	{%= __("Vat Id: ")%}	{%= filters.tax_id %}
 	{% } %}
-</h6>
-
-
-
-<h5 class="text-center">
-	{%= frappe.datetime.str_to_user(filters.from_date) %}
-	{%= __("to") %}
-	{%= frappe.datetime.str_to_user(filters.to_date) %}
 </h5>
+
+
 <hr>
 <table class="table table-bordered">
 	<thead>
 		<tr>
 			<th style="width: 8%">{%= __("Date") %}</th>
-			<th style="width: 15%">{%= __("Ref") %}</th>
-			<th style="width: 25%">{%= __("Party") %}</th>
-			<th style="width: 9%">{%= __("PO NO") %}</th>
-			<th style="width: 9%">{%= __("Customer GRN Number") %}</th>
+			<th style="width: 15%">{%= __("Description") %}</th>
+			<th style="width: 25%">{%= __("Document Reference") %}</th>
+			<th style="width: 9%">{%= __("Customer Name") %}</th>
 			<th style="width: 8%">{%= __("Debit") %}</th>
 			<th style="width: 8%">{%= __("Credit") %}</th>
-			<th style="width: 18%">{%= __("Balance (Dr - Cr)") %}</th>
+			<th style="width: 18%">{%= __("Balance") %}</th>
 		</tr>
 	</thead>
 	<tbody>
 		{% for(var i=0, l=data.length; i<l; i++) { %}
 			<tr>
 			{% if(data[i].posting_date) { %}
-				<td>{%= frappe.datetime.str_to_user(data[i].posting_date) %}</td>
-				<td>{%= data[i].voucher_type %}
-					<br>{%= data[i].voucher_no %}</td>
-				<td>
-					{% if(!(filters.party || filters.account)) { %}
-						{%= data[i].party || data[i].account %}
-						<br>
-					{% } %}
-
-					{{ __("Against") }}: {%= data[i].against %}
-					<br>{%= __("Remarks") %}: {%= data[i].remarks %}
-					{% if(data[i].bill_no) { %}
-						<br>{%= __("Supplier Invoice No") %}: {%= data[i].bill_no %}
-					{% } %}
-					</td>
-				<td>{%= data[i].customer_grn_number %}</td>
-                                        <td>{%= data[i].po_no %}</td>
-					<td style="text-align: right">
-						{%= format_currency(data[i].debit, filters.presentation_currency) %}</td>
-					<td style="text-align: right">
-						{%= format_currency(data[i].credit, filters.presentation_currency) %}</td>
+                <td>{%= frappe.datetime.str_to_user(data[i].posting_date) %}</td>
+                <td>  {%= data[i].remarks %} </td>
+				<td>{%= data[i].voucher_type %} <br>{%= data[i].voucher_no %}</td>
+				<td> {% if (filters.party) { %}  {%= filters.party %} {% } %}</td>
+                <td style="text-align: right">
+                    {%= format_currency(data[i].debit, filters.presentation_currency) %}</td>
+                <td style="text-align: right">
+                    {%= format_currency(data[i].credit, filters.presentation_currency) %}</td>
 			{% } else { %}
 				<td></td>
 				<td></td>
 				<td></td>
 				<td></td>
-				<td><b>{%= frappe.format(data[i].account, {fieldtype: "Link"}) || "&nbsp;" %}</b></td>
 				<td style="text-align: right">
 					{%= data[i].account && format_currency(data[i].debit, filters.presentation_currency) %}
 				</td>
