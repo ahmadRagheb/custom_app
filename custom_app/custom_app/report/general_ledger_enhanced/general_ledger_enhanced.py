@@ -138,7 +138,7 @@ def get_gl_entries(filters):
 			posting_date, account, party_type, party,
 			voucher_type, voucher_no, cost_center, project,
 			against_voucher_type, against_voucher, account_currency,
-			remarks, against,customer_grn_number,po_no, is_opening {select_fields}
+			remarks, against,customer_grn_number,customer_name, po_no, is_opening {select_fields}
 		from `tabGL Entry`
 		where company=%(company)s {conditions} {group_by_statement}
 		{order_by_statement}
@@ -448,6 +448,11 @@ def get_columns(filters):
 			"width": 400
 		}
 		,
+		{
+			"label": _("Customer name"),
+			"fieldname": "customer_name",
+			"width": 400
+		},
 		{
 			"label": _("Customer GRN Number"),
 			"fieldname": "customer_grn_number",

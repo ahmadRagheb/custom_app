@@ -208,24 +208,33 @@ frappe.query_reports["General Ledger Enhanced"] = {
 			"options": "Customer Group",
 			"fieldtype": "Link",
 			on_change: function() {
-                                var customer_group = frappe.query_report.get_filter_value('customer_group');
+				var customer_group = frappe.query_report.get_filter_value('customer_group');
 
-                                if(!customer_group){
-				frappe.query_report.set_filter_value('party_type', "");
+				if(!customer_group){
+					frappe.query_report.set_filter_value('party_type', "");
 				}else{
-                                                frappe.db.get_value("Customer Group",customer_group, "vat_id", function(value) {
-                                                        frappe.query_report.set_filter_value('vat_id', value["vat_id"]);
-                                                });
-						frappe.query_report.set_filter_value('party_type', "Customer");
+					frappe.db.get_value("Customer Group",customer_group, "vat_id", function(value) {
+						frappe.query_report.set_filter_value('vat_id', value["vat_id"]);
+					});
+					frappe.db.get_value("Customer Group",customer_group, "head_office_code", function(value) {
+						frappe.query_report.set_filter_value('head_office_code', value["head_office_code"]);
+					});
+					frappe.query_report.set_filter_value('party_type', "Customer");
 				}
                         }
 		},
 		{
-                        "fieldname":"vat_id",
-                        "label": __("VAT ID"),
-                        "fieldtype": "Data",
+			"fieldname":"head_office_code",
+			"label": __("head_office_code ID"),
+			"fieldtype": "Data",
 			"hidden": 1
-                },
+        },
+		{
+			"fieldname":"vat_id",
+			"label": __("VAT ID"),
+			"fieldtype": "Data",
+			"hidden": 1
+        },
 		{
 			"fieldname":"group_by",
 			"label": __("Group by"),
