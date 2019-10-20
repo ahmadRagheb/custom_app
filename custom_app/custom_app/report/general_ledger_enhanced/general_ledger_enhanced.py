@@ -257,7 +257,7 @@ def get_totals_dict():
 	return _dict(
 		opening = _get_debit_credit_dict(_('Opening')),
 		total = _get_debit_credit_dict(_('Total')),
-		closing = _get_debit_credit_dict(_('Closing (Opening + Total)'))
+		closing = _get_debit_credit_dict(_('Balance'))
 	)
 
 def group_by_field(group_by):
