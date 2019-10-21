@@ -66,19 +66,17 @@
 					 {% } %}
 					
 					</td>
-                <td style="text-align: right">
-                    {%= format_currency(data[i].debit) %}</td>
-                <td style="text-align: right">
-					{%= format_currency(data[i].credit) %}</td>
+                <td style="text-align: right">{%= data[i].debit %}</td>
+                <td style="text-align: right">{%= data[i].credit %}</td>
 			{% } else { %}
 			{%  if (data[i].account) { %}
 				{% if (frappe.format(data[i].account, {fieldtype: "Link"}) ==   "Total") { %}
 				<td  style="text-align: center" colspan="4" ><b>{%= frappe.format(data[i].account, {fieldtype: "Link"}) || "&nbsp;" %}</b></td>
 				<td style="text-align: right">
-					{%= data[i].account && format_currency(data[i].debit, filters.presentation_currency) %}
+					{%= data[i].debit %}
 				</td>
 				<td style="text-align: right">
-					{%= data[i].account && format_currency(data[i].credit, filters.presentation_currency) %}
+					{%= data[i].credit %}
 				</td>
 				{% } else if (frappe.format(data[i].account, {fieldtype: "Link"}) == "Balance")  { %}
 				<td  style="text-align: center" colspan="6" >
@@ -91,17 +89,17 @@
 					<td></td>
 					<td><b>{%= frappe.format(data[i].account, {fieldtype: "Link"}) || "&nbsp;" %}</b></td>
 					<td style="text-align: right">
-						{%= data[i].account && format_currency(data[i].debit, filters.presentation_currency) %}
+						{%= data[i].debit %}
 					</td>
 					<td style="text-align: right">
-						{%= data[i].account && format_currency(data[i].credit, filters.presentation_currency) %}
+						{%= data[i].credit %}
 					</td>
 				{% } %}
 				{% } %}
 			{% } %}
 			
 				<td style="text-align: right">
-					{%= format_currency(data[i].balance, filters.presentation_currency) %}
+					{%= data[i].balance %}
 				</td>
 			</tr>
 		{% } %}
