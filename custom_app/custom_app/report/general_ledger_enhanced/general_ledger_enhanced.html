@@ -39,14 +39,13 @@
 <table class="table table-bordered">
 	<thead>
 		<tr>
-			<th class="text-center" style="width: 10%">{%= __("Date") %}</th>
-
+			<th class="text-center" style="width: 7%">{%= __("Date") %}</th>
 			<th class="text-center" style="width: 25%">{%= __("Description") %}</th>
-			<th class="text-center" style="width: 15%">{%= __("Document Reference") %}</th>
-			<th class="text-center" style="width: 20%">{%= __("Customer Name") %}</th>
-			<th class="text-center" style="width: 10%">{%= __("Debit (SAR)") %}</th>
-			<th class="text-center" style="width: 10%">{%= __("Credit (SAR)") %}</th>
-			<th class="text-center" style="width: 10%">{%= __("Balance") %}</th>
+			<th class="text-center" style="width: 14%">{%= __("Document Reference") %}</th>
+			<th class="text-center" style="width: 25%">{%= __("Customer Name") %}</th>
+			<th class="text-center" style="width: 8%">{%= __("Debit (SAR)") %}</th>
+			<th class="text-center" style="width: 8%">{%= __("Credit (SAR)") %}</th>
+			<th class="text-center" style="width: 12%">{%= __("BALANCE (SAR)") %}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -55,15 +54,24 @@
 			{% if(data[i].posting_date) { %}
 				<td>{%= frappe.datetime.str_to_user(data[i].posting_date) %}</td>
 				
-                <td>  {%= data[i].remarks %} </td>
+				<td>  
+					{% if (data[i].voucher_type == "Sales Invoice") { %}
+						SALES					
+					{% } else { %}
+					{%= data[i].remarks %}
+					{% } %}
+				</td>
+				
 				<td>{%= data[i].voucher_no %}</td>
 				<td>
-					 {% if (data[i].customer_name) { %} 
-					 {%= data[i].customer_name %} 
-					 
-					 {% } else { %}
-					 {%= filters.customer_group %}
-					 {% } %}
+					
+					{% if (data[i].voucher_type == "Journal Entry") { %}
+						Headoffice
+					{% } else if (data[i].customer_name) { %} 
+						{%= data[i].customer_name %} 
+					{% } else { %}
+						{%= filters.customer_group %}
+					{% } %}
 					
 					</td>
                 <td style="text-align: right">{%= data[i].debit %}</td>
@@ -99,7 +107,7 @@
 			{% } %}
 			
 				<td style="text-align: right">
-					{%= data[i].balance %}
+					{%= data[i].balance.toFixed(2) %}
 				</td>
 			</tr>
 		{% } %}
